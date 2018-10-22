@@ -1,0 +1,38 @@
+.App {
+  text-align: center;
+  background-color: #a8e0ee;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 10vmin;
+}
+
+.App-header {
+  background-color: #3bbb2a;
+  min-height: flex;
+  display: flex;
+  flex-direction: column;
+
+  font-size: calc(5px + 1vmin);
+  color: rgb(0, 0, 0);
+}
+
+
+.moneyGif{
+  align-items: left;
+  justify-content: left;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
