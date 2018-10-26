@@ -1,13 +1,13 @@
 import axios from "axios";
 
 const client = axios.create({
-  baseURL: "http://localhost:8080/api",
+  baseURL: "https://nz0fk7vh7g.execute-api.us-east-1.amazonaws.com/prod",
   timeout: 5000,
   headers: null
 }); 
 
   export function getFinancialServicesAxiosList(callback) {
-    client.get("/financialServices").then(function (response) {
+    client.get("/financialservices").then(function (response) {
       callback.onSuccess(response);
     })
     .catch(function (error) {

@@ -9,24 +9,34 @@ import {FinancialServicesList} from './FinancialServiceList';
 import {FinancialCurrencyConverter} from './FinancialCurrencyConverter';
 
 class App extends Component {
-
+  
 
   constructor(props) {
     super(props);
     this.getFinancialServicesMockedList=this.getFinancialServicesMockedList.bind(this);
-    this.getFinancialServicesList=this.getFinancialServiceList.bind(this);
-    this.state = {financialServicesList:{}};
-    this.getFinancialServicesMockedList();
+    this.getFinancialServiceList=this.getFinancialServiceList.bind(this);
+    this.state = {financialServicesList:[]};
+    //this.getFinancialServicesMockedList();
+    this.getFinancialServiceList();
   }
   
 
   getFinancialServiceList(){
       var self = this;
+      var financials=[];
       var callback = {
           onSuccess: function(response){
-              self.setState({
-                  financialService: response.data.financialService
-              });
+            var list = response.data.rates; 
+             
+            for(var key in list) {
+              var val = list[key];
+              financials.push({name:key,value:val})
+            }
+
+
+            localStorage.setItem("JSON", JSON.stringify(financials));
+
+            self.setState({financialServicesList: financials });
           },
           onFailed: function(error){
               console.log(error);
@@ -38,6 +48,7 @@ class App extends Component {
   getFinancialServicesMockedList(){
       var self=this;
       backEndSimulator.getFinancialServicesMockedList( function (response) {
+          localStorage.setItem("PRUEBA",JSON.stringify(response.data));
           self.state={financialServicesList:response.data};   
       }
       );
@@ -48,7 +59,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-        <img class="moneyGif"  data-load="false" data-type="image" src="https://media.giphy.com/media/3dB5OgH1xd4je/giphy.gif?format=100w"  width="100%" height= "100" ></img>
+        
         <div>
           <img src={logo} className="App-logo" alt="logo" /> 
           <h1 className="App-title">AREM Financial Services</h1>
@@ -59,7 +70,7 @@ class App extends Component {
         <div >
         
         <Grid className="ContainerApp" container spacing={4} >
-          <Grid item xs={3}>
+          <Grid item xs={1.3}>
             <Paper >
               <FinancialServicesList financialServices={this.state.financialServicesList} />
             </Paper>
@@ -67,19 +78,17 @@ class App extends Component {
           <Grid item xs={16}>
             <Paper >
               <FinancialCurrencyConverter financialServices={this.state.financialServicesList}/>
-              
             </Paper>
           </Grid>
           <Grid item xs={2}>
-            <img class="thumb-image loaded"  data-load="false" data-type="image" src="https://media.giphy.com/media/72HahsJD4atSE/giphy.gif?format=300w" width="100%" height= "100%" data-image-resolution="400w"></img>
-            
+            <img class="thumb-image loaded"  data-load="false" data-type="image" src="https://media.giphy.com/media/72HahsJD4atSE/giphy.gif?format=300w" width="300" height= "300" data-image-resolution="400w"></img>  
           </Grid>
         </Grid>
         
         </div>
 
         <footer>
-          
+ 
         </footer>
         
 

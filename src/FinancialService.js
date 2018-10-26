@@ -14,13 +14,13 @@ export class FinancialService extends React.Component {
         return (
 
         <Grid container spacing={0}>
-          <Grid item xs={6}>
+          <Grid item xs={4}>
             <ListItem divider="true" >
                 <ListItemText primary={this.props.name} />
             </ListItem>
           </Grid>
-          <Grid item xs={24}>
-            <ListItem selected="true" >
+          <Grid item xs={8}>
+            <ListItem selected="true" dense="true" >
                 <ListItemText secondary={this.props.value} />
             </ListItem>
           </Grid>
