@@ -16,10 +16,12 @@ export class FinancialCurrencyConverter extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { value:1, originalCurrency:"", newCurrency:""};
+        this.state = { value:'', originalCurrency:'', newCurrency:'', originalValue:'', newValue:'', realValue:""};
         this.handleValueChange=this.handleValueChange.bind(this);
         this.handleNewCurrencyChange=this.handleNewCurrencyChange.bind(this);
         this.handleOriginalCurrencyChange=this.handleOriginalCurrencyChange.bind(this);
+        this.updateResult=this.updateResult.bind(this);
+
     }
 
 
@@ -27,7 +29,8 @@ export class FinancialCurrencyConverter extends Component {
 
   render() {
 
-    const financialServicesOptions = this.props.financialServices.map((financialService, i) => {
+    const financialServicesOptions =  this.props.financialServices.map((financialService, i) => {
+        
         return (   
             <option value={financialService.name}>{financialService.name}</option>
         );
@@ -105,7 +108,10 @@ export class FinancialCurrencyConverter extends Component {
                 <Grid item xs={24}>
                     <ListItem  >
                         <h2>La operación da un resultado de:</h2>
-                        <h3>{this.state.value*2}</h3> 
+                        
+                    </ListItem>
+                    <ListItem >
+                    <h3>{this.state.realValue}</h3> 
                     </ListItem>
                 </Grid>
             </Grid>
@@ -118,20 +124,71 @@ export class FinancialCurrencyConverter extends Component {
 
 
   handleOriginalCurrencyChange(e) {
-    this.setState({
-        originalCurrency: e.target.value
+    this.props.financialServices.map((financialServiceElement, i) => {
+        if (financialServiceElement.name===e.target.value){
+            
+            this.setState({
+                originalCurrency:e.target.name,
+                originalValue:financialServiceElement.value
+            }); 
+            this.state={
+                value:this.state.value, originalCurrency: e.target.value,
+                newCurrency:this.state.newCurrency,newValue:this.state.newValue, originalValue:financialServiceElement.value,
+                realValue:this.state.realValue
+            }
+            localStorage.setItem("OHO",this.state.originalCurrency)
+       
+        }
     }); 
+    this.updateResult();
+
   }
 
   handleNewCurrencyChange(e) {
-    this.setState({
-        newCurrency: e.target.value
+    this.props.financialServices.map((financialServiceElement, i) => {
+        
+        if (financialServiceElement.name===e.target.value){
+            this.setState({
+                newCurrency: e.target.value, newValue:financialServiceElement.value
+            }); 
+
+            this.state={
+                value:this.state.value, originalCurrency:this.state.originalCurrency ,
+                newCurrency:e.target.value,newValue:financialServiceElement.value, originalValue:this.state.originalValue,
+                realValue:this.state.realValue
+            }
+        }
+        
     }); 
+    this.updateResult();
   }
 
   handleValueChange(e) {
+    
     this.setState({
         value: e.target.value
     }); 
+    this.state={
+        value:e.target.value, originalCurrency: this.state.originalCurrency,
+        newCurrency:this.state.newCurrency, newValue:this.state.newValue,
+        originalValue:this.state.originalValue,realValue:this.state.realValue
+    }
+    this.updateResult();
+
+
+
   }
+
+  updateResult(){
+
+    var dolarValue=this.state.value/parseFloat(this.state.originalValue);
+    var finalValue=dolarValue*this.state.newValue;
+    this.setState(
+        {realValue:finalValue}
+    )
+
+    
+
+  }
+ 
 }

@@ -34,8 +34,6 @@ class App extends Component {
             }
 
 
-            localStorage.setItem("JSON", JSON.stringify(financials));
-
             self.setState({financialServicesList: financials });
           },
           onFailed: function(error){
